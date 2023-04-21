@@ -33,7 +33,7 @@ TAGCTT	TCT
 ```
     Use the following command to compute the Baseediting efficiency:
 ```
-perl BEanalysisV1.pl Sample/merge.extendedFrags.fastq > Sample.stat
+perl BEanalysisV1.pl ExampleData/example.extendedFrags.fastq ExampleResult> ExampleSample.stat
 ```
 
 
