@@ -1,8 +1,7 @@
 #########################################################################
-#	File Name: BaseCall.pl
+#	File Name: BEanalysisV1.pl
 #	> Author: QiangGao
 #	> Mail: qgao@qi-biodesign.com
-#	Created Time: Sun 15 Oct 2017 04:41:41 PM CST
 #	Modify Time: Tue Sep 20 15:08:38 CST 2022
 #########################################################################
 
