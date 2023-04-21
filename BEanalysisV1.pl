@@ -158,3 +158,58 @@ print "Target	AllReads	PassQC	FindLR	FindLRuse	TotalMatchP	TotalMatchP(%)	找到
 print "$out\t$count\t$passqual\t$geneCount\t$gfr\t$type1\t$type1r\t$all\t$efr\t$noedit\t$edit\t$editC\t$edcr\t$editG\t$edgr\t$editCG\t$edcgr\t$onlyC\t$oncr\t$onlyG\t$ongr\t$in\t$del\t$edr\t$idr\t$middC\t$midCr\n";
 close OUT;
 
+
+sub qual(){
+	my ($seq,$qual)=@_;
+	chomp $qual;
+	chomp $seq;
+	my @tmp=split("",$qual);
+	my $count=0;
+	my @seq=split("",$seq);
+	for(my $i=0;$i<@tmp;$i++){
+		my $q=ord($tmp[$i])-33;
+		if($q<$QUALCUTOFF){
+			#print "$seq[$i]\t";
+			$seq[$i]="N";
+			#print "$seq[$i]\n";
+			$count+=1;
+		}
+		
+	}
+	my $leng=scalar @tmp;
+	my $nseq=join("",@seq);
+	if($count/$leng<=0.5){
+	#if($count==0){
+		return (1,$nseq);
+	}else{
+		return (0,$nseq)
+	}
+}
+sub compare(){
+	my ($tar,$org)=@_;
+	my $count=0;
+	my $countC=0;
+	my $countG=0;
+	my $mC=0;
+	my @tar=split("",$tar);
+	my @org=split("",$org);
+	for(my $i=0;$i<@tar;$i++){
+		#next if($tar[$i]=~/$org[$i]/);
+		$site{$i}{$org[$i]}{$tar[$i]}+=1;
+		$site2{$i}{'all'}+=1 if($tar[$i]!~/N/);
+		$site2{$tar[$i]}{$i}+=1;
+		if(($org[$i]=~/C/ and $tar[$i]=~/T/) or ($org[$i]=~/G/ and $tar[$i]=~/A/)) {
+			$count+=1;
+			$mC+=1 if($i==1);
+		}
+		if(($org[$i]=~/C/ and $tar[$i]=~/T/)) {
+			$countC+=1;
+		}
+		if($org[$i]=~/G/ and $tar[$i]=~/A/ ) {
+			$countG+=1;
+		}
+		$change{$org[$i]}{$tar[$i]}+=1;
+	}
+	return ($count,$countC,$countG,$mC);
+
+}
